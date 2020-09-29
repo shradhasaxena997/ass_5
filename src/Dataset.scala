@@ -5,11 +5,11 @@ case class Student(id: Int, name: String)
 object DataSet {
 
   //Students Details
-  val s1 = Student(1, "ABCDE")
-  val s2 = Student(2, "EFGHI")
-  val s3 = Student(3, "JKLMN")
-  val s4 = Student(4, "OPQRS")
-  val s5 = Student(5, "TUVWX")
+  val s1 = Student(1, "rahul")
+  val s2 = Student(2, "rohit")
+  val s3 = Student(3, "shradha")
+  val s4 = Student(4, "shivani")
+  val s5 = Student(5, "raj")
 
   //Marks Details Student s1
   val s1m1 = Marks(1, 1, 95)
@@ -53,23 +53,21 @@ object DataSet {
   val listOfs4 = List(s4m1, s4m2, s4m3, s4m4, s4m5)
   val listOfs5 = List(s5m1, s5m2, s5m3, s5m4, s5m5)
 
-  //Lists of Data's
   val studentList = List(DataSet.s1, DataSet.s2, DataSet.s3, DataSet.s4, DataSet.s5)
   val marksList = List(DataSet.listOfs1, DataSet.listOfs2, DataSet.listOfs3, DataSet.listOfs4, DataSet.listOfs5)
 }
 
-
-
 object Methods {
 
-  def passFailChecker(subjectId: Int, criteria: Float, flag: String): String = {
+  def passFailChecker(subjectId: Int, criteria: Float, flag: String): Any = {
     val marks = DataSet.marksList.flatMap(x => x.map(y => y))
 
     flag match {
-      case "Pass" | "pass" => marks.filter(_.subjectId == subjectId)
-        .partition(_.marksObtained >= criteria)._1.size.toString
-      case "Fail" | "fail" => marks.filter(_.subjectId == subjectId)
-        .partition(_.marksObtained < criteria)._1.size.toString
+      case "Pass" | "pass" => println(marks.filter(_.subjectId == subjectId)
+        .partition(_.marksObtained >= criteria)._1.size.toString)
+
+      case "Fail" | "fail" => println(marks.filter(_.subjectId == subjectId)
+        .partition(_.marksObtained < criteria)._1.size.toString)
       case _ => "Please Provide the flag as Pass or Fail"
     }
   }
@@ -84,8 +82,7 @@ object Methods {
 
         toppers.foreach(topper => {
           DataSet.studentList.foreach(student => if (topper.studentId == student.id)
-            println(student.name + " " + topper.marksObtained)
-          )
+            println(student.name + " " + topper.marksObtained))
         })
       }
 
@@ -94,8 +91,7 @@ object Methods {
         //val losersId = losers.map(loser => loser.studentId)
         losers.foreach(loser => {
           DataSet.studentList.foreach(student => if (loser.studentId == student.id)
-            println(student.name + " " + loser.marksObtained)
-          )
+            println(student.name + " " + loser.marksObtained))
         })
       }
 
@@ -116,9 +112,7 @@ object Methods {
         val list = result.toList.sortBy(_._2).reverse.slice(0, count)
         list.foreach(lis => {
           DataSet.studentList.foreach(student => if (lis._1 == student.id)
-            println(student.name + " " + lis._2)
-
-          )
+            println(student.name + " " + lis._2))
         })
       }
 
@@ -126,8 +120,7 @@ object Methods {
         val list = result.toList.sortBy(_._2).slice(0, count)
         list.foreach(lis => {
           DataSet.studentList.foreach(student => if (lis._1 == student.id)
-            println(student.name + " " + lis._2)
-          )
+            println(student.name + " " + lis._2))
         })
       }
 
@@ -149,8 +142,7 @@ object Methods {
     DataSet.studentList.foreach(student => {
       if (scholorStudentsKeys.contains(student.id)) {
         println(student.name + " " + goodScholar.toString)
-      }
-      else {
+      } else {
         println(student.name + " " + noScholar.toString)
       }
     })
@@ -188,35 +180,35 @@ object Methods {
     }
   }
 
-  def aboveNintyFive():Any={
+  def aboveNintyFive(): Any = {
 
     val marks = DataSet.marksList.flatMap(x => x.map(y => y))
-    val result = average(marks).toList.filter(_._2>=95)
-    result.foreach(res=>{
-      DataSet.studentList.foreach(student=>{
-        if(res._1==student.id)
-          println(student.name + " " +res._2)
+    val result = average(marks).toList.filter(_._2 >= 95)
+    result.foreach(res => {
+      DataSet.studentList.foreach(student => {
+        if (res._1 == student.id)
+          println(student.name + " " + res._2)
       })
     })
   }
 
-  def reportCard():Any={
+  def reportCard(): Any = {
     val marks = DataSet.marksList.flatMap(x => x.map(y => y))
     val result = average(marks).toList.sortBy(_._1)
 
-    DataSet.studentList.foreach(stud=>{
-      print(stud.name+"   ")
-      result.foreach(res=>{
-        marks.foreach(mark=>{
-          if(stud.id==res._1&&stud.id==mark.studentId)
-            print(mark.marksObtained+"  ")
+    DataSet.studentList.foreach(stud => {
+      print(stud.name + "   ")
+      result.foreach(res => {
+        marks.foreach(mark => {
+          if (stud.id == res._1 && stud.id == mark.studentId)
+            print(mark.marksObtained + "  ")
         })
-        if(res._1 == stud.id)
-        print(res._2)
+        if (res._1 == stud.id)
+          print(res._2)
+
       })
       println()
     })
-
 
   }
 
@@ -229,19 +221,21 @@ object Methods {
       list.groupBy(_.studentId == student.id)(true).foreach(mark => totalMarks += mark.marksObtained)
       averageNumberOfStudents = averageNumberOfStudents + ((student.id.toLong) -> (totalMarks.toFloat / 5))
       totalMarks = 0
-    }
-    )
+    })
     averageNumberOfStudents.toMap
   }
- def main(args:Array[String]){
-    passFailChecker(scala.io.StdIn.readInt(),scala.io.StdIn.readInt(),scala.io.StdIn.readLine())
-    topperLoserChecker(scala.io.StdIn.readInt(),scala.io.StdIn.readInt(),scala.io.StdIn.readLine())
-     toperLoserOverall(scala.io.StdIn.readLine(),scala.io.StdIn.readInt())
-     schlorshipChecker(scala.io.StdIn.readInt(),scala.io.StdIn.readInt(), scala.io.StdIn.readInt())
-     passFailChecker(scala.io.StdIn.readLine(),scala.io.StdIn.readInt())
-     aboveNintyFive()
-     reportCard()
+  def main(args: Array[String]) {
+
+    passFailChecker(scala.io.StdIn.readInt(), scala.io.StdIn.readInt(), scala.io.StdIn.readLine())
+    topperLoserChecker(scala.io.StdIn.readInt(), scala.io.StdIn.readInt(), scala.io.StdIn.readLine())
+    toperLoserOverall(scala.io.StdIn.readLine(), scala.io.StdIn.readInt())
+    schlorshipChecker(scala.io.StdIn.readInt(), scala.io.StdIn.readInt(), scala.io.StdIn.readInt())
+    passFailChecker(scala.io.StdIn.readLine(), scala.io.StdIn.readInt())
+    println("this is above ninety five")
+    aboveNintyFive()
+    println("This is report card")
+    reportCard()
   }
- 
+
 }
 
